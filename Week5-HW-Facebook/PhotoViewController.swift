@@ -12,18 +12,32 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
 
     var image: UIImage!
     var scrollOffset: Float! = 0
+    var currentPage: Int! = 0
+    var isZooming: Bool! = false
+    var beforeZoomingPhotoOrigin: CGPoint! = CGPoint(x: 0, y: 0)
+    var photoList: [UIImageView]!
     
+    @IBOutlet weak var imageScrollContainer: UIView!
     @IBOutlet weak var imageScrollVIew: UIScrollView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var doneButtonImageView: UIImageView!
     @IBOutlet weak var actionImageView: UIImageView!
+
+    @IBOutlet weak var photoView1: UIImageView!
+    @IBOutlet weak var photoView2: UIImageView!
+    @IBOutlet weak var photoView3: UIImageView!
+    @IBOutlet weak var photoView4: UIImageView!
+    @IBOutlet weak var photoView5: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        imageView.image = image
         imageScrollVIew.delegate = self
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        photoList = [photoView1, photoView2, photoView3, photoView4, photoView5]
     }
 
     override func didReceiveMemoryWarning() {
@@ -41,6 +55,7 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollOffset = Float(scrollView.contentOffset.y)
+        
         var alpha = convertValue(scrollOffset, 0.0, -50.0, 1.0, 0.5)
         var alphaViews = convertValue(scrollOffset, 0.0, -20.0, 1.0, 0.0)
         imageScrollVIew.backgroundColor = UIColor(white: 0, alpha: CGFloat(alpha))
@@ -56,10 +71,51 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        return imageView
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        if (!isZooming) {
+            var tempScrollOffset = scrollView.contentOffset.x
+            currentPage = Int(floor(tempScrollOffset / imageScrollVIew.frame.size.width))
+        }
     }
+    
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        if (!isZooming) {
+            beforeZoomingPhotoOrigin = photoList[currentPage].frame.origin
+            photoList[currentPage].frame.origin = CGPoint(x: 0, y: 0)
+            actionImageView.hidden = true
+            doneButtonImageView.hidden = true
+            imageScrollContainer.frame.origin.y = 0
+            
+            for (i, photo) in enumerate(photoList) {
+                if (i != currentPage) {
+                    photo.hidden = true
+                }
+            }
+        }
+        
+        isZooming = true
+        return photoList[currentPage]
+    }
+    
+    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat) {
+        print("sroll")
 
+        if (scale == 1) {
+            isZooming = false
+            photoList[currentPage].frame.origin = beforeZoomingPhotoOrigin
+            imageScrollVIew.contentSize.width = imageScrollContainer.frame.width
+            actionImageView.hidden = false
+            doneButtonImageView.hidden = false
+            imageScrollVIew.contentOffset.x = CGFloat(currentPage) * imageScrollVIew.frame.size.width
+            imageScrollContainer.frame.origin.y = 45
+            
+            for (i, photo) in enumerate(photoList) {
+                if (i != currentPage) {
+                    photo.hidden = false
+                }
+            }
+        }
+    }
     
     /*
     // MARK: - Navigation

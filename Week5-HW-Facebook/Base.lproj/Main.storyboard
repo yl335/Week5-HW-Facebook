@@ -20,7 +20,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0vN-il-tL5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-252" y="319"/>
+            <point key="canvasLocation" x="-482" y="319"/>
         </scene>
         <!--Feed-->
         <scene sceneID="tne-QT-ifu">
@@ -96,6 +96,11 @@
                     <tabBarItem key="tabBarItem" title="Feed" image="feed_tab" id="d4n-rk-9EX"/>
                     <connections>
                         <outlet property="feedScrollView" destination="Qyk-Lm-Hbz" id="NVP-rd-lMb"/>
+                        <outlet property="photoImage1" destination="nGe-88-HjT" id="1Ko-NU-rEx"/>
+                        <outlet property="photoImage2" destination="IyE-et-vQa" id="y7k-RD-ho8"/>
+                        <outlet property="photoImage3" destination="LVJ-Y9-bHB" id="boL-CI-EhR"/>
+                        <outlet property="photoImage4" destination="RZb-T5-5Jr" id="07y-M6-V7n"/>
+                        <outlet property="photoImage5" destination="tZF-I5-XE2" id="X6P-ys-WQS"/>
                         <segue destination="mHm-b9-5QU" kind="modal" identifier="photoSegue" id="YS5-Za-3OV"/>
                     </connections>
                 </viewController>
@@ -133,19 +138,47 @@
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="mHm-b9-5QU" userLabel="Photo" customClass="PhotoViewController" customModule="Week5_HW_Facebook" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9TF-y5-WbQ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1600" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" maximumZoomScale="3" id="Lny-2g-kFN">
-                                <rect key="frame" x="0.0" y="0.0" width="360" height="567"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" maximumZoomScale="3" id="Lny-2g-kFN">
+                                <rect key="frame" x="0.0" y="0.0" width="1600" height="567"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" image="wedding1" id="t6J-go-foT">
-                                        <rect key="frame" x="0.0" y="45" width="320" height="480"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                    </imageView>
+                                    <view contentMode="scaleToFill" id="chf-LW-JcZ" userLabel="scrollContainerView">
+                                        <rect key="frame" x="0.0" y="45" width="1600" height="480"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" image="wedding1" id="t6J-go-foT">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </imageView>
+                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" image="wedding2" id="iW8-R0-J62">
+                                                <rect key="frame" x="320" y="0.0" width="320" height="480"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </imageView>
+                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" image="wedding3" id="ort-wY-TsM">
+                                                <rect key="frame" x="640" y="0.0" width="320" height="480"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </imageView>
+                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" image="wedding4" id="L3a-MG-zcH">
+                                                <rect key="frame" x="960" y="0.0" width="320" height="480"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </imageView>
+                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" image="wedding5" id="Lmj-Sj-O49">
+                                                <rect key="frame" x="1280" y="0.0" width="320" height="480"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="size" keyPath="contentSize">
+                                        <size key="value" width="1600" height="568"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </scrollView>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="photo_actions" id="N0l-Np-lFy">
                                 <rect key="frame" x="0.0" y="524" width="320" height="44"/>
@@ -169,16 +202,24 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="1600" height="568"/>
                     <connections>
                         <outlet property="actionImageView" destination="N0l-Np-lFy" id="OJU-3P-cqG"/>
                         <outlet property="doneButtonImageView" destination="dDr-MD-PeK" id="oaU-hd-D0O"/>
+                        <outlet property="imageScrollContainer" destination="chf-LW-JcZ" id="e5N-bA-kp1"/>
                         <outlet property="imageScrollVIew" destination="Lny-2g-kFN" id="TTh-Jj-6UN"/>
                         <outlet property="imageView" destination="t6J-go-foT" id="pi0-eU-YBk"/>
+                        <outlet property="photoView1" destination="t6J-go-foT" id="RYm-oD-hGn"/>
+                        <outlet property="photoView2" destination="iW8-R0-J62" id="Mkn-mY-e65"/>
+                        <outlet property="photoView3" destination="ort-wY-TsM" id="zMR-5k-Oda"/>
+                        <outlet property="photoView4" destination="L3a-MG-zcH" id="k1S-j0-cT9"/>
+                        <outlet property="photoView5" destination="Lmj-Sj-O49" id="3Re-wx-s1J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eY3-e6-i0t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="582" y="319"/>
+            <point key="canvasLocation" x="158" y="1059"/>
         </scene>
     </scenes>
     <resources>

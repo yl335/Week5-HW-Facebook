@@ -20,24 +20,28 @@ class PhotoTransition: BaseTransition {
         var photoCtrl = toViewController as! PhotoViewController
         
         //frame and position the initial position to start from the feed
-        var feedImageView = feedCtrl.selectedPhoto
-        tempImageView = UIImageView(image: feedImageView.image)
-        tempImageView.frame = feedImageView.frame
+        var selectedPhoto = feedCtrl.photoList[feedCtrl.selectedPhotoIndex]
+        tempImageView = UIImageView(image: selectedPhoto.image)
+        tempImageView.frame = selectedPhoto.frame
         tempImageView.frame.origin.y += feedCtrl.feedScrollView.frame.origin.y
         tempImageView.contentMode = UIViewContentMode.ScaleAspectFill
         tempImageView.clipsToBounds = true
         
         containerView.addSubview(tempImageView)
+        var tempFrame: CGRect = photoCtrl.imageScrollVIew!.frame
+        tempFrame.origin.x = tempFrame.size.width * CGFloat(feedCtrl.selectedPhotoIndex)
+        photoCtrl.imageScrollVIew.scrollRectToVisible(tempFrame, animated: false)
+        photoCtrl.currentPage = feedCtrl.selectedPhotoIndex
+        photoCtrl.imageScrollContainer.hidden = true
         
         UIView.animateWithDuration(0.5, animations: {
             //frame and position the photo to where the photo controller has it
             self.tempImageView.frame = photoCtrl.imageView.frame
-            self.tempImageView.frame.origin.y += photoCtrl.imageScrollVIew.frame.origin.y
+            self.tempImageView.frame.origin.y += photoCtrl.imageScrollContainer.frame.origin.y
             
-            photoCtrl.imageView.hidden = true
             toViewController.view.alpha = 1
             }) { (finished: Bool) -> Void in
-                photoCtrl.imageView.hidden = false
+                photoCtrl.imageScrollContainer.hidden = false
                 self.tempImageView.hidden = true
                 self.finish()
         }
@@ -49,17 +53,19 @@ class PhotoTransition: BaseTransition {
         
         var photoCtrl = fromViewController as! PhotoViewController
         var feedCtrl = ((toViewController as! UITabBarController).selectedViewController as! FeedViewController)
-        var feedImageView = feedCtrl.selectedPhoto
-        
+        var selectedPhoto = feedCtrl.photoList[photoCtrl.currentPage]
 
-        self.tempImageView.frame = photoCtrl.imageView.frame
-        self.tempImageView.frame.origin.y += photoCtrl.imageScrollVIew.frame.origin.y
-        self.tempImageView.frame.origin.y -= CGFloat(photoCtrl.scrollOffset)
-        tempImageView.hidden = false
-        photoCtrl.imageScrollVIew.hidden = true
+        tempImageView = UIImageView(image: selectedPhoto.image)
+        tempImageView.frame = photoCtrl.imageView.frame
+        tempImageView.frame.origin.y += photoCtrl.imageScrollContainer.frame.origin.y
+        tempImageView.frame.origin.y -= CGFloat(photoCtrl.scrollOffset)
+        tempImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        containerView.addSubview(tempImageView)
+        
+        photoCtrl.imageScrollContainer.hidden = true
         
         UIView.animateWithDuration(0.5, animations: {
-            self.tempImageView.frame = feedImageView.frame
+            self.tempImageView.frame = selectedPhoto.frame
             self.tempImageView.frame.origin.y += feedCtrl.feedScrollView.frame.origin.y
             
             fromViewController.view.alpha = 0
