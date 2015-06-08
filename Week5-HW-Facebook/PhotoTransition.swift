@@ -60,6 +60,7 @@ class PhotoTransition: BaseTransition {
         tempImageView.frame.origin.y += photoCtrl.imageScrollContainer.frame.origin.y
         tempImageView.frame.origin.y -= CGFloat(photoCtrl.scrollOffset)
         tempImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        tempImageView.clipsToBounds = true
         containerView.addSubview(tempImageView)
         
         photoCtrl.imageScrollContainer.hidden = true

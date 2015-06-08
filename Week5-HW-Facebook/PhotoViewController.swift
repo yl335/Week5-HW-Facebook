@@ -34,6 +34,7 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
 
         // Do any additional setup after loading the view.
         imageScrollVIew.delegate = self
+        imageScrollVIew.directionalLockEnabled = true
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -78,12 +79,15 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        if (!isZooming) {
+    func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView!) {
+        if (!isZooming)
+        {
+            scrollView.pagingEnabled = false
+            scrollView.directionalLockEnabled = false
+            scrollView.contentSize = CGSize(width: 320, height: 569)
+            
             beforeZoomingPhotoOrigin = photoList[currentPage].frame.origin
             photoList[currentPage].frame.origin = CGPoint(x: 0, y: 0)
-            actionImageView.hidden = true
-            doneButtonImageView.hidden = true
             imageScrollContainer.frame.origin.y = 0
             
             for (i, photo) in enumerate(photoList) {
@@ -91,14 +95,18 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
                     photo.hidden = true
                 }
             }
+            
+            actionImageView.hidden = true
+            doneButtonImageView.hidden = true
+            isZooming = true
         }
-        
-        isZooming = true
+    }
+    
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return photoList[currentPage]
     }
     
     func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat) {
-        print("sroll")
 
         if (scale == 1) {
             isZooming = false
@@ -107,7 +115,13 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
             actionImageView.hidden = false
             doneButtonImageView.hidden = false
             imageScrollVIew.contentOffset.x = CGFloat(currentPage) * imageScrollVIew.frame.size.width
-            imageScrollContainer.frame.origin.y = 45
+            
+            UIView.animateWithDuration(0.2, animations: {
+                self.imageScrollContainer.frame.origin.y = 45
+            })
+            
+            scrollView.pagingEnabled = true
+            scrollView.directionalLockEnabled = true
             
             for (i, photo) in enumerate(photoList) {
                 if (i != currentPage) {
